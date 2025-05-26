@@ -378,5 +378,26 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if r.Method == http.MethodGet {
+		id := r.URL.Query().Get("id")
+
+		if id == "" {
+			tmpl.Execute(w, response)
+			return
+		}
+
+		application, err := getApplication(id)
+
+		if err != nil {
+			fmt.Fprintf(w, "MySQL error: %v", err)
+			return
+		}
+
+		response = FormResponse{
+			ID: id,
+			Application: application,
+		}
+	}
+
 	tmpl.Execute(w, response)
 }
