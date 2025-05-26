@@ -45,6 +45,31 @@
                 </tfoot>
             </table>
         </div>
+
+        <h2>Статистика</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Название ЯП</th>
+                    <th>Выбрало (чел.)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range $pl, $count := .Statistics.ProgLang }}
+                <tr>
+                    <td>{{ $pl }}</td>
+                    <td>{{ $count }}</td>
+                </tr>
+                {{ end}}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Самый популярный:</td>
+                    <td>{{ .Statistics.MostWanted }}</td>
+                </tr>
+        </tfoot>
+        </table>
     </div>
 
     <script src="script.js"></script>

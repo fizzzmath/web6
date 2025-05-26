@@ -1,4 +1,4 @@
-rows = document.querySelectorAll('tbody > tr');
+rows = document.querySelectorAll('.user-administration tbody > tr');
 
 rows.forEach((row) => {
     row.addEventListener('click', () => {

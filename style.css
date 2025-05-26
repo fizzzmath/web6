@@ -149,3 +149,15 @@ a.remove-btn {
 a.remove-btn:hover {
     background-color: #df4848;
 }
+
+.user-administration {
+    margin-bottom: 20px;
+}
+
+.statistics > table {
+    margin: 0 auto;
+}
+
+.statistics td {
+    text-align: center;
+}

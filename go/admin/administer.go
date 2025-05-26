@@ -24,6 +24,7 @@ type (
 	Statistics struct {
 		Quantity int
 		ProgLang map[string]int
+		MostWanted string
 	}
 
 	AdminResponse struct {
@@ -124,6 +125,53 @@ func getApplications() ([]Application, error) {
 	return appls, nil
 }
 
+func getStatistics() (Statistics, error) {
+	statistics := Statistics{}
+
+	db, err := sql.Open("mysql", "u68867:6788851@/u68867")
+
+	if err != nil {
+		return statistics, err
+	}
+
+	defer db.Close()
+
+	sel, err := db.Query(`
+		SELECT NAME, COUNT(*)
+		FROM PL
+		JOIN FAVORITE_PL fav ON fav.PL_ID = PL.ID
+		GROUP BY NAME;
+	`)
+
+	if err != nil {
+		return statistics, err
+	}
+
+	defer sel.Close()
+
+	for sel.Next() {
+		pl, count := "", 0
+
+		err := sel.Scan(&pl, &count)
+
+		if err != nil {
+			return statistics, err
+		}
+
+		statistics.ProgLang[pl] = count
+	}
+
+	statistics.MostWanted = "c"
+
+	for key, val := range statistics.ProgLang {
+		if val > statistics.ProgLang[statistics.MostWanted] {
+			statistics.MostWanted = key
+		}
+	}
+
+	return statistics, nil
+}
+
 func administerHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("admin/administer.html")
 
@@ -142,7 +190,14 @@ func administerHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		statistics := Statistics{}
+		statistics, err := getStatistics()
+
+		if err != nil {
+			fmt.Fprintf(w, "MySQL error: %v", err)
+			return
+		}
+
+		statistics.Quantity = len(applications)
 
 		response.Applications = applications
 		response.Statistics = statistics
