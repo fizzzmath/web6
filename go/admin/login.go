@@ -48,7 +48,7 @@ func valid(admin Admin, w http.ResponseWriter) (bool, error) {
 	}
 
 	if login != admin.Login || fmt.Sprintf("%x", sha256.Sum256([]byte(password))) != admin.Password {
-		fmt.Fprintf(w, "Ожидалось:\t%s\t%s\nПолучено:\t%s\t%s", login, sha256.Sum256([]byte(password)), admin.Login, admin.Password)
+		fmt.Fprintf(w, "Ожидалось:\t%s\t%s\nПолучено:\t%s\t%x", login, sha256.Sum256([]byte(password)), admin.Login, admin.Password)
 		return false, nil
 	}
 
