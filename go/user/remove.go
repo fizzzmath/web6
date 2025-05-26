@@ -45,7 +45,7 @@ func removeUser(id string) error {
 		return err
 	}
 
-	login := "u" + strings.Repeat("0", 7 - len(id))
+	login := "u" + strings.Repeat("0", 7 - len(id)) + id
 
 	err = rmRowByID(login, "LOGIN", "USER")
 
