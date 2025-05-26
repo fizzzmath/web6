@@ -63,20 +63,18 @@ func removeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := LoginResponse{}
+	id := r.URL.Query().Get("id")
 
-	if r.Method == http.MethodPost {
-		id := r.URL.Query().Get("id")
+	err = removeUser(id)
 
-		err := removeUser(id)
+	if err != nil {
+		fmt.Fprintf(w, "MySQL error: %v", err)
+		return
+	}
 
-		if err != nil {
-			fmt.Fprintf(w, "MySQL error: %v", err)
-			return
-		}
-
-		response.Message = "Пользователь успешно удален"
-		response.Type = "warning_green"
+	response := LoginResponse{
+		Message: "Пользователь успешно удален",
+		Type: "warning_green",
 	}
 	
 	tmpl.Execute(w, response)
