@@ -4,13 +4,14 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"text/template"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func rmRowByID(id string, col string, table string) error {
+func rmRowByID(id any, col string, table string) error {
 	db, err := sql.Open("mysql", "u68867:6788851@/u68867")
 
 	if err != nil {
@@ -32,13 +33,19 @@ func rmRowByID(id string, col string, table string) error {
 }
 
 func removeUser(id string) error {
-	err := rmRowByID(id, "PL_ID", "FAVORITE_PL")
+	intID, err := strconv.Atoi(id)
 
 	if err != nil {
 		return err
 	}
 
-	err = rmRowByID(id, "ID", "APPLICATION")
+	err = rmRowByID(intID, "PL_ID", "FAVORITE_PL")
+
+	if err != nil {
+		return err
+	}
+
+	err = rmRowByID(intID, "ID", "APPLICATION")
 
 	if err != nil {
 		return err
