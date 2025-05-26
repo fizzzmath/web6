@@ -6,5 +6,5 @@ import (
 )
 
 func administerHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Добро пожаловать на страницу входа!")
+	fmt.Fprintf(w, "Добро пожаловать на страницу администратора!")
 }
