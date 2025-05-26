@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/sha256"
 	"database/sql"
 	"fmt"
 	"html/template"
@@ -46,7 +47,7 @@ func valid(admin Admin) (bool, error) {
 		}
 	}
 
-	if login != admin.Login || fmt.Sprintf("%x", password) != admin.Password {
+	if login != admin.Login || fmt.Sprintf("%x", sha256.Sum256([]byte(password))) != admin.Password {
 		return false, nil
 	}
 
