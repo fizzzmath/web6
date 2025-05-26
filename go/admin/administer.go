@@ -126,7 +126,9 @@ func getApplications() ([]Application, error) {
 }
 
 func getStatistics() (Statistics, error) {
-	statistics := Statistics{}
+	statistics := Statistics{
+		ProgLang: make(map[string]int),
+	}
 
 	db, err := sql.Open("mysql", "u68867:6788851@/u68867")
 
