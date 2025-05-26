@@ -39,12 +39,6 @@ func removeUser(id string) error {
 		return err
 	}
 
-	err = rmRowByID(intID, "PL_ID", "FAVORITE_PL")
-
-	if err != nil {
-		return err
-	}
-
 	err = rmRowByID(intID, "ID", "APPLICATION")
 
 	if err != nil {
