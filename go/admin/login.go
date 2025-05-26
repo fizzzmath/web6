@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	jwt "github.com/golang-jwt/jwt/v5"
 )
 
 type (
@@ -54,6 +56,29 @@ func valid(admin Admin) (bool, error) {
 	return true, nil
 }
 
+func grantAccessToken(w http.ResponseWriter) {
+	payload := jwt.RegisteredClaims{
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour)),
+	}
+	key := []byte("access-token-secret-key")
+
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
+
+	t, err := accessToken.SignedString(key)
+
+	if err != nil {
+		fmt.Fprintf(w, "Ошибка при создании токена: %v", err)
+		return
+	}
+
+	cookie := &http.Cookie{
+		Name: "accessToken",
+		Value: t,
+	}
+
+	http.SetCookie(w, cookie)
+}
+
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("admin/login.html")
 
@@ -78,6 +103,8 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			tmpl.Execute(w, "Неверные логин или пароль")
 			return
 		}
+
+		grantAccessToken(w)
 
 		administerHandler(w, r);
 		return;

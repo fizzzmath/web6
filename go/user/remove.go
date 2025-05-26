@@ -64,6 +64,16 @@ func removeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !isAuthorized(r) {
+		response := LoginResponse{
+			Message: "Для выполнения этого действия необходимо авторизоваться",
+			Type: "warning_red",
+		}
+
+		tmpl.Execute(w, response)
+		return
+	}
+
 	id := r.URL.Query().Get("id")
 
 	err = removeUser(id)
