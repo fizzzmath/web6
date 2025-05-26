@@ -79,12 +79,8 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		tmpl, err = template.ParseFiles("admin/administrate.html")
-
-		if err != nil {
-			fmt.Fprintf(w, "Template error: %v", err)
-			return
-		}
+		administerHandler(w, r);
+		return;
 	}
 
 	tmpl.Execute(w, nil)
