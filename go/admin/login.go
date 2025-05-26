@@ -17,7 +17,7 @@ type (
 	}
 )
 
-func valid(admin Admin) (bool, error) {
+func valid(admin Admin, w http.ResponseWriter) (bool, error) {
 	db, err := sql.Open("mysql", "u68867:6788851@/u68867")
 
 	if err != nil {
@@ -48,6 +48,7 @@ func valid(admin Admin) (bool, error) {
 	}
 
 	if login != admin.Login || fmt.Sprintf("%x", sha256.Sum256([]byte(password))) != admin.Password {
+		fmt.Fprintf(w, "Ожидалось:\t%s\t%s\nПолучено:\t%s\t%s", login, sha256.Sum256([]byte(password)), admin.Login, admin.Password)
 		return false, nil
 	}
 
@@ -67,7 +68,8 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			Password: r.FormValue("password"),
 		}
 
-		ok, err := valid(admin)
+		ok, err := valid(admin, w)
+		return
 
 		if err != nil {
 			fmt.Fprintf(w, "MySQL error: %v", err)
