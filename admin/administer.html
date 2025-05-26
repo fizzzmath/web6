@@ -24,21 +24,23 @@
                     <th>Биография</th>
                 </thead>
                 <tbody>
+                    {{ range $i, $appl := .Applications }}
                     <tr>
-                        <td>1</td>
-                        <td>Атабаев Олег Константинович</td>
-                        <td>+79996399695</td>
-                        <td>atabaev.o.k.04@gmail.com</td>
-                        <td>2004-10-06</td>
-                        <td>Мужской</td>
-                        <td>Go, JavaScript</td>
-                        <td>Это моя биография</td>
+                        <td>{{ $appl.Login }}</td>
+                        <td>{{ $appl.FullName }}</td>
+                        <td>{{ $appl.Phone }}</td>
+                        <td>{{ $appl.Email }}</td>
+                        <td>{{ $appl.Birthdate }}</td>
+                        <td>{{ $appl.Gender }}</td>
+                        <td>{{ $appl.PLString }}</td>
+                        <td>{{ $appl.Bio }}</td>
                     </tr>
+                    {{ end }}
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="7">ВСЕГО: </td>
-                        <td>0</td>
+                        <td>{{ .Statistics.Quantity }}</td>
                     </tr>
                 </tfoot>
             </table>
