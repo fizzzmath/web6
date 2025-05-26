@@ -9,9 +9,12 @@ func main() {
 	cgi.Serve(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		action := r.URL.Query().Get("action")
 
-		if action == "form" {
+		switch action {
+		case "form":
 			formHandler(w, r)
-		} else {
+		case "remove":
+			removeHandler(w, r)
+		default:
 			loginHandler(w, r)
 		}
 	}))
