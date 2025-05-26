@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Задание 5</title>
+    <title>Задание 6</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="form-container">
-        <h2>Вход в администрирование</h2>
+        <h2>Администрирование <br>(вход)</h2>
 
         <form action="admin.cgi" method="post">
             <label for="login">Логин:</label>
@@ -16,6 +16,7 @@
 
             <label for="password">Пароль:</label>
             <input type="password" id="password" name="password">
+            <div class="warning warning_red">{{ . }}</div>
 
             <button type="submit">Войти</button>
         </form>
