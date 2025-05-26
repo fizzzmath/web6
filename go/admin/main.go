@@ -3,6 +3,8 @@ package main
 import (
 	"net/http"
 	"net/http/cgi"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
